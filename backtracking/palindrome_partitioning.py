@@ -25,16 +25,27 @@ s contains only lowercase English letters.
 class Solution(TestCase):
     def partition(self, s: str) -> list[list[str]]:
         partitions = []
+        cur = []
+        def backtrack(i: int):
+            if i >= len(s):
+                partitions.append(cur.copy())
+                return
 
-        def backtrack():
-            pass
+            for idx in range(i, len(s)):
+                cur_str = s[i:idx + 1]
+                if self.is_palindrome(cur_str):
+                    cur.append(cur_str)
+                    backtrack(idx + 1)
+                    cur.pop()
+
+        backtrack(0)
 
         return partitions
 
-    def is_palindrome(s: str) -> bool:
-        l = len(s)
-        for i in range(l):
-            if s[i] != s[l - i - 1]:
+    def is_palindrome(self, s: str) -> bool:
+        length = len(s)
+        for i in range(length // 2):
+            if s[i] != s[length - i - 1]:
                 return False
         return True
 
