@@ -79,4 +79,4 @@ class Solution(TestCase):
             ([["a","a"]], "aaa", False),
         ]
 
-Solution().run_tests()
+Solution().check()

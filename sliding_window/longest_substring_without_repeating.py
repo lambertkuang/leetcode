@@ -63,4 +63,4 @@ class Solution(TestCase):
             ('pwwkew', 3),
         ]
 
-Solution().run_tests()
+Solution().check()

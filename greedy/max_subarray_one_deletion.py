@@ -98,4 +98,4 @@ class Solution(TestCase):
         return self.maximumSum
 
 
-Solution().run_tests()
+Solution().check()

@@ -53,4 +53,4 @@ class Solution(TestCase):
             ([1,2,2], [[],[1],[1,2],[1,2,2],[2],[2,2]]),
         ]
 
-Solution().run_tests()
+Solution().check()

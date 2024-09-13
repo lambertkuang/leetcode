@@ -26,4 +26,4 @@ class Solution(TestCase):
         return self.maxProfit
 
 
-Solution().run_tests()
+Solution().check()

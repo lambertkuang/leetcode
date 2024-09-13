@@ -30,4 +30,4 @@ class Solution(TestCase):
         ]
 
 
-Solution().run_tests()
+Solution().check()

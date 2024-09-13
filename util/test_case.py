@@ -7,7 +7,7 @@ class TestCase(unittest.TestCase):
     def method(self):
         raise NotImplementedError()
 
-    def run_tests(self):
+    def check(self):
         for args in self.test_cases():
             t = args[0]
             expected = args[-1]

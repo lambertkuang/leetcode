@@ -75,4 +75,4 @@ class Solution(TestCase):
             ([2,5,2,1,2], 5, [[1,2,2],[5]]),
         ]
 
-Solution().run_tests()
+Solution().check()
