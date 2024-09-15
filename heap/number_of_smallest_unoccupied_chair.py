@@ -1,3 +1,5 @@
+import heapq
+from collections import defaultdict
 from util.test_case import TestCase
 
 # https://leetcode.com/problems/the-number-of-the-smallest-unoccupied-chair/
@@ -44,16 +46,41 @@ Since friend 0 sat on chair 2, we return 2.
 Constraints:
 
 n == times.length
-2 <= n <= 104
+2 <= n <= 10^4
 times[i].length == 2
-1 <= arrivali < leavingi <= 105
+1 <= arrivali < leavingi <= 10^5
 0 <= targetFriend <= n - 1
 Each arrivali time is distinct.
 """
 
 class Solution(TestCase):
     def smallestChair(self, times: list[list[int]], targetFriend: int) -> int:
-        pass
+        # keep one heap for enter times, one heap for leave times
+        chairs = [None] * len(times)
+        next_empty_chair = 0
+        enter = []
+        leave = []
+        for friend in range(len(times)):
+            enter_time, leave_time = times[friend]
+            heapq.heappush(enter, (enter_time, friend))
+            heapq.heappush(leave, (leave_time, friend))
+
+        # place friends in chairs, and remove them when they leave
+        while enter or leave:
+            if enter[0][0] < leave[0][0]:
+                _, friend = heapq.heappop(enter)
+                if friend == targetFriend:
+                    return next_empty_chair
+                chairs[next_empty_chair] = friend
+                while chairs[next_empty_chair] is not None:
+                    next_empty_chair += 1
+            else:
+                # process leaving friend
+                _, friend = heapq.heappop(leave)
+                i = chairs.index(friend)
+                chairs[i] = None
+                if i < next_empty_chair:
+                    next_empty_chair = i
 
     def method(self):
         return self.smallestChair
@@ -62,6 +89,7 @@ class Solution(TestCase):
         return [
             ([[1,4],[2,3],[4,6]], 1, 1),
             ([[3,10],[1,5],[2,6]], 0, 2),
+            ([[65253,94097],[53112,69530],[81932,93953],[580,17372],[68060,71030],[89288,90296],[44959,88547],[6214,54011],[97818,99471],[78902,97146],[71212,82972],[59442,86960],[72154,86992],[53663,80857],[48804,48973],[21405,23283],[96683,97745],[44529,57089],[82381,95500],[77233,98954],[46567,78575],[61841,63803],[6965,8982],[73406,91256],[2908,44896],[13652,60043],[38007,70678],[39164,84350],[82783,83192],[12047,44261],[38040,95704],[91821,95627],[95954,96558],[42939,49574],[35645,85888],[88399,89499],[35336,95198],[29465,42867],[2901,59586],[27777,81800],[60421,76192],[24437,55571],[69910,91110],[19882,80672],[19066,61320],[56677,74370],[71594,84251],[38251,41916],[31467,66022],[76687,88548],[52754,91352],[10343,20946],[99927,99962],[45952,53275],[97823,98554],[48115,48895],[51322,66032],[69261,83519],[8709,58686],[43490,50560],[93228,98446],[16041,56850],[34634,68772],[15413,81430],[65434,79855],[37254,58101],[61815,89611],[49288,58728],[36730,99097]], 0, 5),
         ]
 
 
