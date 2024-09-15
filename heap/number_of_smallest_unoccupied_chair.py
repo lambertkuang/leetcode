@@ -82,6 +82,27 @@ class Solution(TestCase):
                 if i < next_empty_chair:
                     next_empty_chair = i
 
+    def smallestChair2(self, times: list[list[int]], targetFriend: int) -> int:
+        # all available chairs: 0 ... len(times) - 1
+        available_chairs = list(range(len(times)))
+        # leave_times will be a heap with items (leave_time, chair)
+        leave_times = []
+        for arrival, leave in sorted(times):
+            # while the earliest leave time is less than or equal to arrival time,
+            # we should update the available chairs by pushing the chair
+            # back onto the available_chairs heap
+            while leave_times and leave_times[0][0] <= arrival:
+                heapq.heappush(available_chairs, heapq.heappop(leave_times)[1])
+
+            # each arrival time is distinct, so we can identify targetFriend by their arrival time
+            # once we find the target friend, we can just return the first available chair
+            if arrival == times[targetFriend][0]:
+                return available_chairs[0]
+
+            # we can seat the current friend at the next available chair,
+            # and update the leave_times
+            heapq.heappush(leave_times, (leave, heapq.heappop(available_chairs)))
+
     def method(self):
         return self.smallestChair
 
