@@ -30,17 +30,7 @@ The number of nodes in the tree is in the range [0, 10^4].
 
 class Solution:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
-        max_depth = 0
+        if not root:
+            return 0
 
-        def dfs(node: Optional[TreeNode], depth: int = 1) -> None:
-            nonlocal max_depth
-            if not node:
-                return
-
-            max_depth = max(max_depth, depth)
-            dfs(node.right, depth + 1)
-            dfs(node.left, depth + 1)
-
-        dfs(root)
-
-        return max_depth
+        return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
