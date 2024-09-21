@@ -52,12 +52,10 @@ class Trie:
         node = self.root
         for i in range(len(word)):
             letter = word[i]
-            is_end = True if i == len(word) - 1 else False
             if letter not in node.children:
-                node.children[letter] = Node(letter, is_end=is_end)
-            elif i == len(word) - 1:
-                node.children[letter].is_end = is_end
+                node.children[letter] = Node(letter)
             node = node.children[letter]
+        node.is_end = True
 
     def search(self, word: str) -> bool:
         node = self.root
