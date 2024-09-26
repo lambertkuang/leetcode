@@ -1,3 +1,5 @@
+from util.test_case import TestCase
+
 """
 https://leetcode.com/problems/find-the-duplicate-number/
 
@@ -37,6 +39,27 @@ How can we prove that at least one duplicate number must exist in nums?
 Can you solve the problem in linear runtime complexity?
 """
 
-class Solution:
+class Solution(TestCase):
     def findDuplicate(self, nums: list[int]) -> int:
-        pass
+        slow = nums[0]
+        fast = nums[nums[0]]
+        while slow != fast:
+            slow = nums[slow]
+            fast = nums[nums[fast]]
+        slow2 = 0
+        while slow != slow2:
+            slow = nums[slow]
+            slow2 = nums[slow2]
+        return slow2
+
+    def method(self):
+        return self.findDuplicate
+
+    def test_cases(self):
+        return [
+            ([3,1,3,4,2], 3),
+            ([1,2,3,4,4], 4),
+            ([1,2,3,2,2], 2),
+        ]
+
+Solution().check()
