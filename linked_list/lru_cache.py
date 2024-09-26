@@ -55,10 +55,11 @@ class LRUCache:
 
     def __init__(self, capacity: int):
         self.capacity = capacity
-        self.size = 0
         self.store = {}
-        self.lru_head = None
-        self.lru_tail = None
+        self.lru_head = ListNode(-1, -1)
+        self.lru_tail = ListNode(-1, -1)
+        self.lru_head.next = self.lru_tail
+        self.lru_tail.prev = self.lru_head
 
     def get(self, key: int) -> int:
         if key not in self.store:
@@ -72,43 +73,25 @@ class LRUCache:
     def remove(self, key: int) -> None:
         if key not in self.store:
             return
-        if key == self.lru_head.key:
-            self.lru_head = self.lru_head.next
-            if self.lru_head:
-                self.lru_head.prev = None
-        if key == self.lru_tail.key:
-            if self.lru_tail.prev:
-                self.lru_tail.prev.next = None
-                self.lru_tail = self.lru_tail.prev
-        else:
-            node = self.store[key]
-            if node.prev:
-                node.prev.next = node.next
-            if node.next:
-                node.next.prev = node.prev
-
+        node = self.store[key]
+        prev = node.prev
+        next = node.next
+        prev.next = next
+        next.prev = prev
         del self.store[key]
-        self.size -= 1
 
     def insert(self, key: int, value: int) -> None:
         node = ListNode(key, value)
-        if not self.lru_head:
-            self.lru_head = node
-        if not self.lru_tail:
-            self.lru_tail = node
-        else:
-            node.prev = self.lru_tail
-            self.lru_tail.next = node
-            self.lru_tail = node
+        prev = self.lru_tail.prev
+        prev.next = node
+        node.prev = prev
+        node.next = self.lru_tail
+        self.lru_tail.prev = node
         self.store[key] = node
-        self.size += 1
 
     def put(self, key: int, value: int) -> None:
         if key in self.store:
             self.remove(key)
-            self.insert(key, value)
-            return
-
-        if self.size == self.capacity:
-            self.remove(self.lru_head.key)
         self.insert(key, value)
+        if len(self.store) > self.capacity:
+            self.remove(self.lru_head.next.key)
