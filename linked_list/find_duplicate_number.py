@@ -41,6 +41,8 @@ Can you solve the problem in linear runtime complexity?
 
 class Solution(TestCase):
     def findDuplicate(self, nums: list[int]) -> int:
+        # Floyd's cycle detection algorithm
+        # https://en.wikipedia.org/wiki/Cycle_detection#Floyd's_tortoise_and_hare
         slow = nums[0]
         fast = nums[nums[0]]
         while slow != fast:
