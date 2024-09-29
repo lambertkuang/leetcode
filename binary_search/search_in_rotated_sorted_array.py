@@ -58,7 +58,7 @@ class Solution(TestCase):
                     left = mid + 1
             else:
                 # and here the right portion of the array is sorted
-                if target >= nums[mid] and target <= nums[right]:
+                if nums[mid] <= target and target <= nums[right]:
                     # if the target is between mid and right, we know that
                     # it has to be in the right portion of the array
                     # since we already know mid <= right
