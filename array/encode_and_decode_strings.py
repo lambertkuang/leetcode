@@ -26,8 +26,31 @@ strs[i] contains only UTF-8 characters.
 class Solution:
 
     def encode(self, strs: list[str]) -> str:
-        pass
+        delimiter = '|'
+        encoded = ''
+        for s in strs:
+            encoded += f'{len(s)}{delimiter}{s}'
+        return encoded
 
-    def decode(self, s: str) -> list[str]:
-        pass
+    def decode(self, encoded: str) -> list[str]:
+        delimiter = '|'
+        strs = []
+        cur_str = ''
+        cur_count = ''
+        i = 0
 
+        while i < len(encoded):
+            c = encoded[i]
+            if c == delimiter:
+                i += 1
+                count = int(cur_count) + i
+                while i < count:
+                    cur_str += encoded[i]
+                    i += 1
+                strs.append(cur_str)
+                cur_str = ''
+                cur_count = ''
+            else:
+                cur_count += c
+                i += 1
+        return strs
