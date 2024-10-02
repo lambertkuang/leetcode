@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from util.test_case import TestCase
 
 # https://leetcode.com/problems/longest-repeating-character-replacement/
@@ -32,16 +34,21 @@ s consists of only uppercase English letters.
 
 class Solution(TestCase):
     def characterReplacement(self, s: str, k: int) -> int:
-        # keep track of num letters
-        # keep left and right pointer
-        store = {}
         longest = 0
         left = 0
-        num_replaced = 0
+        right = 0
+        count = defaultdict(int)
 
-        # for right in range(len(s)):
-        #     if s[left] == s[right]:
+        while right < len(s):
+            c = s[right]
+            count[c] += 1
 
+            while (right - left + 1) - max(count.values()) > k:
+                count[s[left]] -= 1
+                left += 1
+
+            longest = max(longest, right - left + 1)
+            right += 1
 
         return longest
 
@@ -52,4 +59,11 @@ class Solution(TestCase):
         return [
             ('ABAB', 2, 4),
             ('AABABBA', 1, 4),
+            ('ABAA', 0, 2),
+            ('ABCDEFGG', 2, 4),
+            ('BBBBBE', 0, 5),
+            ('AAAA', 2, 4),
+            ('ABBB', 2, 4),
         ]
+
+Solution().check()
