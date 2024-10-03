@@ -5,21 +5,21 @@ from util.test_case import TestCase
 
 class Solution(TestCase):
     def subsets(self, nums: list[int]) -> list[list[int]]:
-        results = []
+        subsets = []
 
-        def backtrack(r, i):
-            nonlocal nums
-            nonlocal results
+        def backtrack(i: int, cur: list):
             if i > len(nums):
                 return
-            results.append(r.copy())
-            for n in range(i, len(nums)):
-                r.append(nums[n])
-                backtrack(r, n + 1)
-                r.pop()
 
-        backtrack([], 0)
-        return results
+            subsets.append(cur.copy())
+            for idx in range(i, len(nums)):
+                cur.append(nums[idx])
+                backtrack(idx + 1, cur)
+                cur.pop()
+
+        backtrack(0, [])
+
+        return subsets
 
     def method(self):
         return self.subsets
