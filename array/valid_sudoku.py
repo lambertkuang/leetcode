@@ -55,33 +55,27 @@ board[i][j] is a digit 1-9 or '.'.
 class Solution(TestCase):
     def isValidSudoku(self, board: list[list[str]]) -> bool:
         # check rows, columns, and squares
-        for row in board:
-            vals = set()
-            for num in row:
-                if num in vals:
-                    return False
-                if num != '.':
-                    vals.add(num)
-
-        for col in range(len(board)):
-            vals = set()
-            for row in range(len(board[0])):
-                num = board[row][col]
-                if num in vals:
-                    return False
-                if num != '.':
-                    vals.add(num)
-
+        rows = defaultdict(set)
+        cols = defaultdict(set)
         square_vals = defaultdict(set)
 
         for r in range(len(board)):
             for c in range(len(board[0])):
-                quadrant = (r // 3, c // 3)
                 num = board[r][c]
-                if num in square_vals[quadrant]:
+                if num == '.':
+                    continue
+
+                quadrant = (r // 3, c // 3)
+                if (
+                    num in square_vals[quadrant]
+                    or num in rows[r]
+                    or num in cols[c]
+                ):
                     return False
-                if num != '.':
-                    square_vals[quadrant].add(num)
+
+                square_vals[quadrant].add(num)
+                rows[r].add(num)
+                cols[c].add(num)
 
         return True
 
