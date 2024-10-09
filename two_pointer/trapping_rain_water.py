@@ -33,12 +33,24 @@ n == height.length
 class Solution(TestCase):
     def trap(self, height: list[int]) -> int:
         water = 0
+        max_left = height[0]
+        max_right = height[-1]
+        left = cur = 0
+        right = len(height) - 1
 
-        for i in range(1, len(height) - 1):
-            max_left = max(height[0:i])
-            max_right = max(height[i + 1:])
-            cur = height[i]
-            water += max(min(max_left, max_right) - cur, 0)
+        while left < right:
+            water += max(min(max_left, max_right) - height[cur], 0)
+            if height[left] > max_left:
+                max_left = height[left]
+            elif height[right] > max_right:
+                max_right = height[right]
+
+            if max_left <= max_right:
+                left += 1
+                cur = left
+            else:
+                right -= 1
+                cur = right
 
         return water
 
