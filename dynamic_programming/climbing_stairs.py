@@ -31,12 +31,18 @@ Constraints:
 
 class Solution(TestCase):
     def climbStairs(self, n: int) -> int:
-        dp = [1, 2, 3]
-        i = len(dp)
-        while i < n:
-            dp.append(dp[i - 1] + dp[i - 2])
-            i += 1
-        return dp[n - 1]
+        if n <= 3:
+            return n
+
+        n1 = 2
+        n2 = 3
+
+        for _ in range(4, n + 1):
+            new_n = n1 + n2
+            n1 = n2
+            n2 = new_n
+
+        return n2
 
     def method(self):
         return self.climbStairs
